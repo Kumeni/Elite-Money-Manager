@@ -1,0 +1,19 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.underline{
+    border: 1px solid gold;
+    max-width: 100px;
+    margin-bottom: 1rem;
+}
+
+.share-icon{
+    cursor: pointer;
+}
+
+.copy-icon{
+    cursor: pointer;
+}
