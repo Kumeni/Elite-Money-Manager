@@ -27,9 +27,13 @@ main{
 
 .accounts h1{
     margin-bottom: 1rem;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
 }
 
+.accounts h2{
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
 .accounts-table{
     margin-top: 2rem;
     background-color: white;
