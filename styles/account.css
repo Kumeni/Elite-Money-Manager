@@ -11,6 +11,7 @@ main{
     justify-content: center;
     align-content: top;
     padding: 2rem;
+    background-color: rgb(240, 240, 240);
 }
 .quick-actions{
     background-color: white;
@@ -37,6 +38,9 @@ main{
     cursor: pointer;
 }
 
+.recent-transactions-title{
+    margin-top: 3rem;
+}
 .recent-transactions{
     max-width: 500px;
     margin-left: 2rem;
@@ -57,6 +61,7 @@ main{
 
 .recent-transaction > div:first-of-type{
     border-right: 1px solid rgb(210, 210, 210);
+    padding-right: 1rem;
 }
 .recent-transaction > div:first-of-type > p:first-of-type{
     font-weight: 600;

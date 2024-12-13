@@ -25,6 +25,9 @@ main{
     min-height:150px;
 }
 
+.accounts{
+    width: max-content;
+}
 .accounts h1{
     margin-bottom: 1rem;
     font-size: 1.2rem;
