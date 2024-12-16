@@ -55,3 +55,19 @@ main{
 .accounts-table th{
     text-align: left;
 }
+
+.create-account-button{
+    background-color: #007bff;
+    padding: 1rem;
+    display: block;
+    margin-left: auto;
+    border-radius: 5px;
+    margin: 2rem 0rem 2rem auto;
+    border: none;
+    color: white;
+    font-weight: 500;
+}
+
+.create-account-button:hover{
+    cursor: pointer;
+}

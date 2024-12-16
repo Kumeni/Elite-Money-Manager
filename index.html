@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="./styles/my-accounts.css" />
     <link rel="stylesheet" type="text/css" href="./styles/my-accounts.css" />
     <link rel="stylesheet" type="text/css" href="./styles/make-transfer-form.css" />
+    <link rel="stylesheet" type="text/css" href="./styles/account-form.css" />
     <link rel="stylesheet" type="text/css" href="./styles/popup.css" />
 
     <title>Elite Money Manager</title>
@@ -70,6 +71,8 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <button class="create-account-button">CREATE ACCOUNT</button>
             </div>
         </section>
 
@@ -112,6 +115,35 @@
                         <button class="make-transfer-button">
                             <img src="./assets/icons/White-share-icon.png" alt="White share icon" />
                             <span>Make Transfer</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <section class="popup">
+            <div >
+                <div>
+                    <div class="popup-close">
+                        <span onclick="editAccount()" title="Close">&times;</span>
+                    </div>
+                </div>
+                <div>
+                    <form class="account-form" onsubmit="handleAccountEdit(event)">
+                        <div class="make-transfer-title">
+                            <img src="./assets/icons/Create-account-black-icon.png" class="Black create account icon" />
+                            <span>Create Account</span>
+                        </div>
+                        <div class="account-name">
+                            <span>Account Name</span>
+                            <div>
+                                <input type="text" placeholder="Account Name"/>
+                                <span class="error"></span>
+                            </div>
+                        </div>
+
+                        <button class="make-transfer-button">
+                            <img src="./assets/icons/Create-account-white-icon.png" alt="Create account white icon" />
+                            <span>Create Account</span>
                         </button>
                     </form>
                 </div>
