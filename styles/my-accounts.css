@@ -15,16 +15,13 @@ main{
     min-height: 100vh;
     align-items: center;
 }
-
 .profile{
     text-align: right;
 }
-
 .border{
     border: 1px solid gold;
     min-height:150px;
 }
-
 .accounts{
     width: max-content;
 }
@@ -32,7 +29,6 @@ main{
     margin-bottom: 1rem;
     font-size: 1.2rem;
 }
-
 .accounts h2{
     margin-bottom: 1rem;
     font-size: 1.1rem;
@@ -51,11 +47,9 @@ main{
     white-space: nowrap;
     text-overflow: ellipsis;
 }
-
 .accounts-table th{
     text-align: left;
 }
-
 .create-account-button{
     background-color: #007bff;
     padding: 1rem;
@@ -67,7 +61,7 @@ main{
     color: white;
     font-weight: 500;
 }
-
 .create-account-button:hover{
     cursor: pointer;
+    box-shadow: 1px 1px 4px rgb(180, 180, 180);
 }

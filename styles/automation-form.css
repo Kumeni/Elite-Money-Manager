@@ -1,0 +1,106 @@
+.account-name, .automation-title, .date-of-the-month, .day-of-the-week ul li, .automate-button{
+    display: grid;
+    display: -ms-grid;
+    display: -moz-grid;
+}
+
+.automation-form{
+    width:95vw;
+    max-width: 600px;
+    text-align: left;
+}
+
+.automation-title{
+    grid-template-columns: auto auto;
+    align-content: center;
+    justify-content: center;
+    column-gap: 1rem;
+}
+
+.automation-title span{
+    align-self: center;
+}
+.account-name{
+    grid-template-columns: 150px auto;
+    align-items: center;
+    margin: 2rem 0rem 2rem 4rem;
+    column-gap:1rem;
+}
+
+.day-of-the-week ul li{
+    grid-template-columns: max-content auto;
+    column-gap: 0.5rem;
+    padding: 0.5rem 1rem;
+}
+.day-of-the-week label{
+    cursor: pointer;
+}
+.date-of-the-month td, .date-of-the-month th{
+    border: 1px solid rgba(120, 120, 120, 0.5);
+    text-align: center;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.date-of-the-month td:hover{
+    background-color: rgb(210, 210, 210);
+    cursor: pointer;
+}
+.account-name input{
+    display: block;
+    width: 100%;
+    padding: 1.2rem 1.2rem;
+    border: none;
+    border-radius: 0.5rem;
+    border:1px solid rgb(210, 210, 210);
+}
+.account-name input:focus{
+    outline: none;
+    box-shadow: 1px 1px 4px rgb(180, 180, 180);
+    border-color: transparent;
+}
+
+.edit-account-title{
+    text-align: center;
+}
+
+.frequency{
+    margin: 2rem 0rem 2rem 4rem;
+}
+
+.frequency .swiper-slide{
+    box-shadow: 1px 1px 4px rgb(180, 180, 180);
+    padding: 2rem 1rem;
+}
+
+.choosing-frequency button{
+    padding: 1rem 1.5rem;
+    background-color: white;
+    border: 1px solid rgb(210, 210, 210);
+}
+
+.choosing-frequency button:hover{
+    cursor: pointer;
+    box-shadow: 1px 1px 4px rgb(180, 180, 180);
+}
+
+.choosing-frequency .active{
+    box-shadow: 1px 1px 4px rgb(180, 180, 180);
+}
+
+.automate-button{
+    grid-template-columns: max-content auto;
+    column-gap: 1rem;
+    align-items: center;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    margin: 1rem auto;
+    border-radius: 5px;
+}
+
+.automate-button:hover{
+    cursor: pointer;
+    box-shadow: 1px 1px 4px rgb(180, 180, 180);
+}
