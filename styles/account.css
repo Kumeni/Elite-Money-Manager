@@ -79,5 +79,5 @@ main{
 }
 
 .recent-transaction > div:last-of-type .debit{
-    color: green;
+    color: #28a745;
 }

@@ -1,4 +1,4 @@
-.account-name, .automation-title, .date-of-the-month, .day-of-the-week ul li, .automate-button{
+.account-name, .automation-title, .date-of-the-month, .day-of-the-week ul li, .automate-button, .add-automations-button{
     display: grid;
     display: -ms-grid;
     display: -moz-grid;
@@ -103,4 +103,53 @@
 .automate-button:hover{
     cursor: pointer;
     box-shadow: 1px 1px 4px rgb(180, 180, 180);
+}
+
+.account-automations{
+    overflow: hidden;
+    text-align: left;
+    max-width: 600px;
+}
+
+.automations-list > p{
+    margin: 1rem 0rem 1rem 0rem;
+    font-weight: 600;
+}
+
+.automations-list table{
+    background-color: white;
+    /* box-shadow: 1px 1px 4px rgb(180, 180, 180); */
+    padding: 2rem 1rem;
+    border-collapse: collapse;
+    margin: 2rem 0rem;
+}
+
+.automations-list table td{
+    padding: 0.2rem 1rem;
+}
+
+.automations-list table tr:nth-of-type(odd){
+    background-color: rgb(245, 245, 245);
+}
+
+.automations-list table td button{
+    background-color: transparent;
+    border: none;
+}
+
+.automations-list .add-automations-button{
+    grid-template-columns: max-content auto;
+    align-items: center;
+    column-gap: 1rem;
+    padding: 0.8rem 1.5rem;
+    margin: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.automations-list .add-automations-button:hover{
+    box-shadow: 1px 1px 4px rgb(180, 180, 180);
+    cursor: pointer;
 }

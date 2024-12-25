@@ -6,7 +6,7 @@
     left:0px;
     background-color: rgba(180, 180, 180, 0.719);
     overflow: auto;
-    display: block;
+    display: none;
     z-index:10;
     /* visibility:visible;
     transition: visibility 0.5s linear z-index 0.5 linear;

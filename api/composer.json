@@ -1,0 +1,5 @@
+{
+    "require": {
+        "ctrlaltdylan/courier": "^1.1"
+    }
+}
