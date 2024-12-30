@@ -44,6 +44,7 @@
                             <td>4,000.00</td>
                             <td><img src="./assets/icons/Copy-icon.png" alt="copy icon" class="copy-icon" title="Copy Unique ID to clipboard"/></td>
                             <td><img src="./assets/icons/Share-icon.png" alt="share icon" class="share-icon" title="Make Transfers"/></td>
+                            <td><img onclick="manipulateAccount({name:'Rent'})" src="./assets/icons/Edit-icon.png" alt="edit icon" class="edit-icon" title="Edit account"/></td>
                         </tr>
                         <tr>
                             <td>2.</td>
@@ -52,6 +53,7 @@
                             <td>4,000.00</td>
                             <td><img src="./assets/icons/Copy-icon.png" alt="copy icon" class="copy-icon" title="Copy Unique ID to clipboard"/></td>
                             <td><img src="./assets/icons/Share-icon.png" alt="share icon" class="share-icon" title="Make Transfers"/></td>
+                            <td><img onclick="manipulateAccount({name:'Loan Repayment'})" src="./assets/icons/Edit-icon.png" alt="edit icon" class="edit-icon" title="Edit account"/></td>
                         </tr>
                         <tr>
                             <td>3.</td>
@@ -60,6 +62,7 @@
                             <td>4,000.00</td>
                             <td><img src="./assets/icons/Copy-icon.png" alt="copy icon" class="copy-icon" title="Copy Unique ID to clipboard"/></td>
                             <td><img src="./assets/icons/Share-icon.png" alt="share icon" class="share-icon" title="Make Transfers"/></td>
+                            <td><img onclick="manipulateAccount({name:'Insurance'})"src="./assets/icons/Edit-icon.png" alt="edit icon" class="edit-icon" title="Edit account"/></td>
                         </tr>
                         <tr>
                             <td>4.</td>
@@ -68,11 +71,12 @@
                             <td>4,000.00</td>
                             <td><img src="./assets/icons/Copy-icon.png" alt="copy icon" class="copy-icon" title="Copy Unique ID to clipboard"/></td>
                             <td><img src="./assets/icons/Share-icon.png" alt="share icon" class="share-icon" title="Make Transfers"/></td>
+                            <td><img onclick="manipulateAccount({name:'Machinery'})"src="./assets/icons/Edit-icon.png" alt="edit icon" class="edit-icon" title="Edit account"/></td>
                         </tr>
                     </tbody>
                 </table>
 
-                <button class="create-account-button">CREATE ACCOUNT</button>
+                <button class="create-account-button" onclick="manipulateAccount()">CREATE ACCOUNT</button>
             </div>
         </section>
 
@@ -120,35 +124,38 @@
                 </div>
             </div>
         </section>
-        <section class="popup">
+        <section class="popup" id="account-form-popup">
             <div >
                 <div>
                     <div class="popup-close">
-                        <span onclick="editAccount()" title="Close">&times;</span>
+                        <span onclick="manipulateAccount(false)" title="Close">&times;</span>
                     </div>
                 </div>
                 <div>
-                    <form class="account-form" onsubmit="handleAccountEdit(event)">
+                    <form class="account-form" id="manipulate-account-form">
                         <div class="make-transfer-title">
                             <img src="./assets/icons/Create-account-black-icon.png" class="Black create account icon" />
-                            <span>Create Account</span>
+                            <span id="account-form-title">Create Account</span>
                         </div>
                         <div class="account-name">
                             <span>Account Name</span>
                             <div>
-                                <input type="text" placeholder="Account Name"/>
-                                <span class="error"></span>
+                                <input type="text" placeholder="Account Name" id="account-name-input" onchange="handleAccountNameChange(event)"/>
+                                <span class="error" id="account-name-error"></span>
                             </div>
                         </div>
 
-                        <button class="make-transfer-button">
+                        <button class="make-transfer-button" onclick="submitAccountForm(event)">
                             <img src="./assets/icons/Create-account-white-icon.png" alt="Create account white icon" />
-                            <span>Create Account</span>
+                            <span id="account-form-submit-button">Create Account</span>
                         </button>
                     </form>
                 </div>
             </div>
         </section>
     </main>
+
+    <script src="./scripts/popup.js"></script>
+    <script src="./scripts/account-manipulation-scripts.js"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
     $host = 'localhost';
     $user = "root";
     $password = "";
-    $database = "beko_corporate";
+    $database = "elite_money_manager";
     /*$user = "bekocorp";
     $password = "JubY7R;5Gc86n[";
     $database = "bekocorp_db";*/
