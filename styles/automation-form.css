@@ -1,13 +1,36 @@
-.account-name, .automation-title, .date-of-the-month, .day-of-the-week ul li, .automate-button, .add-automations-button{
+.account-name, 
+.automation-title, 
+.dates-of-the-month, 
+.day-of-the-week ul li, 
+.automate-button, 
+.add-automations-button,
+.automation-title-container{
     display: grid;
     display: -ms-grid;
     display: -moz-grid;
+}
+
+.account-automations > .swiper-wrapper >  .swiper-slide{
+    width: 300px;;
+    overflow: hidden;
 }
 
 .automation-form{
     width:95vw;
     max-width: 600px;
     text-align: left;
+}
+
+.automation-title-container{
+    grid-template-columns: repeat(2, auto);
+    justify-content: start;
+    column-gap: 1rem;
+}
+
+.back-button{
+    box-shadow: 1px 1px 4px rgb(180, 180, 180);
+    border-radius: 5px;
+    padding: 0.5rem 1.5rem;
 }
 
 .automation-title{
@@ -20,6 +43,7 @@
 .automation-title span{
     align-self: center;
 }
+
 .account-name{
     grid-template-columns: 150px auto;
     align-items: center;
@@ -27,25 +51,32 @@
     column-gap:1rem;
 }
 
+.payment-method .account-name{
+    margin: 0rem 0rem 0rem 5rem;
+}
+
 .day-of-the-week ul li{
     grid-template-columns: max-content auto;
     column-gap: 0.5rem;
     padding: 0.5rem 1rem;
 }
+
 .day-of-the-week label{
     cursor: pointer;
 }
-.date-of-the-month td, .date-of-the-month th{
+
+.dates-of-the-month td, .dates-of-the-month th{
     border: 1px solid rgba(120, 120, 120, 0.5);
     text-align: center;
     padding: 1rem;
     border-radius: 5px;
 }
 
-.date-of-the-month td:hover{
+.dates-of-the-month td:hover{
     background-color: rgb(210, 210, 210);
     cursor: pointer;
 }
+
 .account-name input{
     display: block;
     width: 100%;
@@ -54,6 +85,7 @@
     border-radius: 0.5rem;
     border:1px solid rgb(210, 210, 210);
 }
+
 .account-name input:focus{
     outline: none;
     box-shadow: 1px 1px 4px rgb(180, 180, 180);
@@ -76,7 +108,7 @@
 .choosing-frequency button{
     padding: 1rem 1.5rem;
     background-color: white;
-    border: 1px solid rgb(210, 210, 210);
+    border: none;
 }
 
 .choosing-frequency button:hover{
@@ -114,6 +146,10 @@
 .automations-list > p{
     margin: 1rem 0rem 1rem 0rem;
     font-weight: 600;
+}
+
+.automations-list button:hover{
+    cursor: pointer;
 }
 
 .automations-list table{

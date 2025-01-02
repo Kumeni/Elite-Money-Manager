@@ -122,16 +122,16 @@
             </div>
         </section>
         <div class="customization-buttons">
-            <button title="Account Settings"><img src="./assets/icons/Settings-icon.png" alt="settings icon"/><span>Account Settings</span></button>
-            <button title="Account Automations"><img src="./assets/icons/Automation-icon.png" alt="share icon"/><span>Account Automations</span></button>
+            <button title="Account Settings" onclick="manageAccount()"><img src="./assets/icons/Settings-icon.png" alt="settings icon"/><span>Account Settings</span></button>
+            <button title="Account Automations" onclick="configureAutomations()"><img src="./assets/icons/Automation-icon.png" alt="share icon"/><span>Account Automations</span></button>
         </div>
     </main>
     
-    <section class="popup">
+    <section class="popup" id="account-settings-popup">
         <div >
             <div>
                 <div class="popup-close">
-                    <span onclick="editAutomation()" title="Close">&times;</span>
+                    <span onclick="manageAccount(false)" title="Close">&times;</span>
                 </div>
             </div>
             <div>
@@ -176,10 +176,10 @@
                             <button>Monthly</button>
                         </div>
                     </div>
-                    <div class="frequency-container">
+                    <!-- <div class="frequency-container">
                         <div class="frequency">
                             <div class="swiper-wrapper">
-                                <!-- Slides -->
+                                Slides
                                 <div class="swiper-slide">
                                     <div class="day-of-the-week">
                                         <ul>
@@ -240,22 +240,22 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <button class="automate-button">
+                    <!-- <button class="automate-button">
                         <img src="./assets/icons/white-automation-icon.png" alt="White automation icon" />
                         <span>Automate</span>
-                    </button>
+                    </button> -->
                 </form>
             </div>
         </div>
     </section>
 
-    <section class="popup">
+    <section class="popup" id="automations-popup">
         <div >
             <div>
                 <div class="popup-close">
-                    <span onclick="editAutomation()" title="Close">&times;</span>
+                    <span onclick="configureAutomations(false)" title="Close">&times;</span>
                 </div>
             </div>
             <div>
@@ -271,33 +271,36 @@
                                     <tr>
                                         <td>1.</td>
                                         <td>Automation number</td>
-                                        <td><button><img src="./assets/icons/Edit-icon.png" /></button></td>
-                                        <td><button><img src="./assets/icons/Suspend-icon.png" /></button></td>
-                                        <td><button><img src="./assets/icons/Delete-icon.png" /></button></td>
+                                        <td title="Manage Automation"><button onclick="manageAutomation(0)"><img src="./assets/icons/Edit-icon.png" /></button></td>
+                                        <td title="Suspend Automation"><button><img src="./assets/icons/Suspend-icon.png" /></button></td>
+                                        <td title="Delete Automation"><button><img src="./assets/icons/Delete-icon.png" /></button></td>
                                     </tr>
                                     <tr>
                                         <td>2.</td>
                                         <td>Automation number</td>
-                                        <td><button><img src="./assets/icons/Edit-icon.png" /></button></td>
-                                        <td><button><img src="./assets/icons/Suspend-icon.png" /></button></td>
-                                        <td><button><img src="./assets/icons/Delete-icon.png" /></button></td>
+                                        <td title="Manage Automation"><button onclick="manageAutomation(1)"><img src="./assets/icons/Edit-icon.png" /></button></td>
+                                        <td title="Suspend Automation"><button><img src="./assets/icons/Suspend-icon.png" /></button></td>
+                                        <td title="Delete Automation"><button><img src="./assets/icons/Delete-icon.png" /></button></td>
                                     </tr>
                                     <tr>
                                         <td>3.</td>
                                         <td>Automation number</td>
-                                        <td><button><img src="./assets/icons/Edit-icon.png" /></button></td>
-                                        <td><button><img src="./assets/icons/Suspend-icon.png" /></button></td>
-                                        <td><button><img src="./assets/icons/Delete-icon.png" /></button></td>
+                                        <td title="Manage Automation"><button onclick="manageAutomation(3)"><img src="./assets/icons/Edit-icon.png" /></button></td>
+                                        <td title="Suspend Automation"><button><img src="./assets/icons/Suspend-icon.png" /></button></td>
+                                        <td title="Delete Automation"><button><img src="./assets/icons/Delete-icon.png" /></button></td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <button class="add-automations-button"><img src="./assets/icons/add-icon.png" /> Add automation</button>
+                            <button class="add-automations-button" onclick="manageAutomation()"><img src="./assets/icons/add-icon.png" /> Add automation</button>
                         </div>
                         <div class="swiper-slide">
                             <form class="automation-form" onsubmit="handleAccountEdit(event)">
-                                <div class="automation-title">
-                                    <img src="./assets/icons/Automation-icon.png" class="Automation icon" />
-                                    <span>Automate Transactions</span>
+                                <div class="automation-title-container">
+                                    <span class="back-button" onclick="manageAutomation(false)">Back</span>
+                                    <div class="automation-title">
+                                        <img src="./assets/icons/Automation-icon.png" class="Automation icon" />
+                                        <span>Automate Transactions</span>
+                                    </div>
                                 </div>
                                 <div class="account-name">
                                     <span>Transaction Type</span>
@@ -306,6 +309,33 @@
                                             <option>Automated Deposit</option>
                                             <!-- <option>Automated Payment</option> -->
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="account-name">
+                                    <span>Payment Method</span>
+                                    <div class="choosing-frequency">
+                                        <button onclick="choosePaymentMethod(event, 'mpesa')" class="payment-method-button active">Mpesa</button>
+                                        <!-- <button onclick="choosePaymentMethod(event, 'visa')" class="payment-method-button">VISA | Coming Soon</button> -->
+                                        <button class="payment-method-button" onclick="event.preventDefault()">VISA | Coming Soon</button>
+                                    </div>
+                                </div>
+                                <div class="payment-method-container">
+                                    <div class="payment-method">
+                                        <div class="swiper-wrapper">
+                                            <!-- Slides -->
+                                            <div class="swiper-slide">
+                                                <div class="account-name">
+                                                    <span>Phone Number</span>
+                                                    <div>
+                                                        <input type="text" placeholder="eg. 254700000000"/>
+                                                        <span class="error"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <p style="text-align: center;">VISA | Coming Soon</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="account-name">
@@ -331,8 +361,8 @@
                                 <div class="account-name">
                                     <span>Frequency</span>
                                     <div class="choosing-frequency">
-                                        <button class="active">Weekly</button>
-                                        <button>Monthly</button>
+                                        <button onclick="chooseFrequency(event, 'weekly')" class="frequency-button active">Weekly</button>
+                                        <button onclick="chooseFrequency(event, 'monthly')" class="frequency-button">Monthly</button>
                                     </div>
                                 </div>
                                 <div class="frequency-container">
@@ -353,45 +383,45 @@
                                                  </div>
                                             </div>
                                             <div class="swiper-slide">
-                                                <div class="date-of-the-month">
-                                                    <table>
+                                                <div class="dates-of-the-month">
+                                                    <table onclick="handleDateClick(event)">
                                                         <thead></thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td>1</td>
-                                                                <td>2</td>
-                                                                <td>3</td>
-                                                                <td>4</td>
-                                                                <td>5</td>
-                                                                <td>6</td>
-                                                                <td>7</td>
+                                                                <td class="date-of-the-month">1</td>
+                                                                <td class="date-of-the-month">2</td>
+                                                                <td class="date-of-the-month">3</td>
+                                                                <td class="date-of-the-month">4</td>
+                                                                <td class="date-of-the-month">5</td>
+                                                                <td class="date-of-the-month">6</td>
+                                                                <td class="date-of-the-month">7</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>8</td>
-                                                                <td>9</td>
-                                                                <td>10</td>
-                                                                <td>11</td>
-                                                                <td>12</td>
-                                                                <td>13</td>
-                                                                <td>14</td>
+                                                                <td class="date-of-the-month">8</td>
+                                                                <td class="date-of-the-month">9</td>
+                                                                <td class="date-of-the-month">10</td>
+                                                                <td class="date-of-the-month">11</td>
+                                                                <td class="date-of-the-month">12</td>
+                                                                <td class="date-of-the-month">13</td>
+                                                                <td class="date-of-the-month">14</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>15</td>
-                                                                <td>16</td>
-                                                                <td>17</td>
-                                                                <td>18</td>
-                                                                <td>19</td>
-                                                                <td>20</td>
-                                                                <td>21</td>
+                                                                <td class="date-of-the-month">15</td>
+                                                                <td class="date-of-the-month">16</td>
+                                                                <td class="date-of-the-month">17</td>
+                                                                <td class="date-of-the-month">18</td>
+                                                                <td class="date-of-the-month">19</td>
+                                                                <td class="date-of-the-month">20</td>
+                                                                <td class="date-of-the-month">21</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>22</td>
-                                                                <td>23</td>
-                                                                <td>24</td>
-                                                                <td>25</td>
-                                                                <td>26</td>
-                                                                <td>27</td>
-                                                                <td>28</td>
+                                                                <td class="date-of-the-month">22</td>
+                                                                <td class="date-of-the-month">23</td>
+                                                                <td class="date-of-the-month">24</td>
+                                                                <td class="date-of-the-month">25</td>
+                                                                <td class="date-of-the-month">26</td>
+                                                                <td class="date-of-the-month">27</td>
+                                                                <td class="date-of-the-month">28</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -400,6 +430,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                
                                 <button class="automate-button">
                                     <img src="./assets/icons/white-automation-icon.png" alt="White automation icon" />
                                     <span>Automate</span>
@@ -411,7 +442,10 @@
             </div>
         </div>
     </section>
+
     <script type="text/javascript" src = "./scripts/swiper/swiper-bundle.min.js"></script>
     <script type="text/javascript" src="./scripts/swiper/initialize-swiper.js"></script>
+    <script type="text/javascript" src="./scripts/account-automations.js"></script>
+    <script type="text/javascript" src="./scripts/account-settings.js"></script>
 </body>
 </html>
