@@ -141,111 +141,12 @@
                         <span>Account Settings</span>
                     </div>
                     <div class="account-name">
-                        <span>Transaction Type</span>
-                        <div>
-                            <select>
-                                <option>Automated Deposit</option>
-                                <!-- <option>Automated Payment</option> -->
-                            </select>
-                        </div>
-                    </div>
-                    <div class="account-name">
-                        <span>Target Amount</span>
-                        <div>
-                            <input type="text" placeholder="Amount"/>
-                            <span class="error"></span>
-                        </div>
-                    </div>
-                    <div class="account-name">
-                        <span>Regular Deposit Amount</span>
-                        <div>
-                            <input type="text" placeholder="Amount"/>
-                            <span class="error"></span>
-                        </div>
-                    </div>
-                    <div class="account-name">
-                        <span>Time of the day</span>
-                        <div>
-                            <input type="time" placeholder="Account Name" value="10:00"/>
-                        </div>
-                    </div>
-                    <div class="account-name">
-                        <span>Frequency</span>
+                        <span>Visibility</span>
                         <div class="choosing-frequency">
-                            <button class="active">Weekly</button>
-                            <button>Monthly</button>
+                            <button class="active">Public</button>
+                            <button>Private</button>
                         </div>
                     </div>
-                    <!-- <div class="frequency-container">
-                        <div class="frequency">
-                            <div class="swiper-wrapper">
-                                Slides
-                                <div class="swiper-slide">
-                                    <div class="day-of-the-week">
-                                        <ul>
-                                             <li><input type="checkbox" id="sunday"/><label for="sunday">Sunday</label></li>
-                                             <li><input type="checkbox" id="monday"/><label for="monday">Monday</label></li>
-                                             <li><input type="checkbox" id="tuesday"/><label for="tuesday">Tuesday</label></li>
-                                             <li><input type="checkbox" id="wednesday"/><label for="wednesday">Wednesday</label></li>
-                                             <li><input type="checkbox" id="thursday"/><label for="thursday">Thursday</label></li>
-                                             <li><input type="checkbox" id="friday"/><label for="friday">Friday</label></li>
-                                             <li><input type="checkbox" id="saturday"/><label for="saturday">Saturday</label></li>
-                                        </ul>
-                                     </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="date-of-the-month">
-                                        <table>
-                                            <thead></thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>2</td>
-                                                    <td>3</td>
-                                                    <td>4</td>
-                                                    <td>5</td>
-                                                    <td>6</td>
-                                                    <td>7</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>8</td>
-                                                    <td>9</td>
-                                                    <td>10</td>
-                                                    <td>11</td>
-                                                    <td>12</td>
-                                                    <td>13</td>
-                                                    <td>14</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>15</td>
-                                                    <td>16</td>
-                                                    <td>17</td>
-                                                    <td>18</td>
-                                                    <td>19</td>
-                                                    <td>20</td>
-                                                    <td>21</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>22</td>
-                                                    <td>23</td>
-                                                    <td>24</td>
-                                                    <td>25</td>
-                                                    <td>26</td>
-                                                    <td>27</td>
-                                                    <td>28</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-
-                    <!-- <button class="automate-button">
-                        <img src="./assets/icons/white-automation-icon.png" alt="White automation icon" />
-                        <span>Automate</span>
-                    </button> -->
                 </form>
             </div>
         </div>
@@ -294,7 +195,7 @@
                             <button class="add-automations-button" onclick="manageAutomation()"><img src="./assets/icons/add-icon.png" /> Add automation</button>
                         </div>
                         <div class="swiper-slide">
-                            <form class="automation-form" onsubmit="handleAccountEdit(event)">
+                            <form class="automation-form" onsubmit="manageAccountAutomation(event)">
                                 <div class="automation-title-container">
                                     <span class="back-button" onclick="manageAutomation(false)">Back</span>
                                     <div class="automation-title">
@@ -303,12 +204,20 @@
                                     </div>
                                 </div>
                                 <div class="account-name">
+                                    <span>Automation Name</span>
+                                    <div>
+                                        <input onchange="handleAutomationNameChange(event)" type="text" placeholder="Rent Savings Automation"/>
+                                        <span class="error" id="automation-name-error"></span>
+                                    </div>
+                                </div>
+                                <div class="account-name">
                                     <span>Transaction Type</span>
                                     <div>
-                                        <select>
-                                            <option>Automated Deposit</option>
+                                        <select onchange="handleTransactionTypeChange(event)">
+                                            <option value="deposit">Automated Deposit</option>
                                             <!-- <option>Automated Payment</option> -->
                                         </select>
+                                        <span class="error" id="transaction-type-error"></span>
                                     </div>
                                 </div>
                                 <div class="account-name">
@@ -327,8 +236,8 @@
                                                 <div class="account-name">
                                                     <span>Phone Number</span>
                                                     <div>
-                                                        <input type="text" placeholder="eg. 254700000000"/>
-                                                        <span class="error"></span>
+                                                        <input onchange="handlePhoneNumberChange(event)" type="text" placeholder="eg. 254700000000"/>
+                                                        <span class="error" id="phone-number-error"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -341,21 +250,22 @@
                                 <div class="account-name">
                                     <span>Target Amount</span>
                                     <div>
-                                        <input type="text" placeholder="Amount"/>
-                                        <span class="error"></span>
+                                        <input onchange="handleTargetAmount(event)" type="text" placeholder="Target Amount"/>
+                                        <span class="error" id="target-amount-error"></span>
                                     </div>
                                 </div>
                                 <div class="account-name">
                                     <span>Regular Deposit Amount</span>
                                     <div>
-                                        <input type="text" placeholder="Amount"/>
-                                        <span class="error"></span>
+                                        <input onchange="handleRegularDepositAmount(event)" type="text" placeholder="Regular Deposit Amount"/>
+                                        <span class="error" id="regular-deposit-amount-error"></span>
                                     </div>
                                 </div>
                                 <div class="account-name">
                                     <span>Time of the day</span>
                                     <div>
-                                        <input type="time" placeholder="Account Name" value="10:00"/>
+                                        <input onchange="handleTimeOfTheDay(event)" type="time" placeholder="Account Name" value="10:00"/>
+                                        <span class="error" id="time-of-the-day-error"></span>
                                     </div>
                                 </div>
                                 <div class="account-name">
@@ -372,13 +282,13 @@
                                             <div class="swiper-slide">
                                                 <div class="day-of-the-week">
                                                     <ul>
-                                                         <li><input type="checkbox" id="sunday"/><label for="sunday">Sunday</label></li>
-                                                         <li><input type="checkbox" id="monday"/><label for="monday">Monday</label></li>
-                                                         <li><input type="checkbox" id="tuesday"/><label for="tuesday">Tuesday</label></li>
-                                                         <li><input type="checkbox" id="wednesday"/><label for="wednesday">Wednesday</label></li>
-                                                         <li><input type="checkbox" id="thursday"/><label for="thursday">Thursday</label></li>
-                                                         <li><input type="checkbox" id="friday"/><label for="friday">Friday</label></li>
-                                                         <li><input type="checkbox" id="saturday"/><label for="saturday">Saturday</label></li>
+                                                         <li><input onclick="handleDayOfTheWeekChange(event, 0)" type="checkbox" id="sunday"/><label for="sunday">Sunday</label></li>
+                                                         <li><input onclick="handleDayOfTheWeekChange(event, 1)"type="checkbox" id="monday"/><label for="monday">Monday</label></li>
+                                                         <li><input onclick="handleDayOfTheWeekChange(event, 2)"type="checkbox" id="tuesday"/><label for="tuesday">Tuesday</label></li>
+                                                         <li><input onclick="handleDayOfTheWeekChange(event, 3)"type="checkbox" id="wednesday"/><label for="wednesday">Wednesday</label></li>
+                                                         <li><input onclick="handleDayOfTheWeekChange(event, 4)"type="checkbox" id="thursday"/><label for="thursday">Thursday</label></li>
+                                                         <li><input onclick="handleDayOfTheWeekChange(event, 5)"type="checkbox" id="friday"/><label for="friday">Friday</label></li>
+                                                         <li><input onclick="handleDayOfTheWeekChange(event, 6)"type="checkbox" id="saturday"/><label for="saturday">Saturday</label></li>
                                                     </ul>
                                                  </div>
                                             </div>
@@ -429,6 +339,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <span class="error" id="frequency-error"></span>
                                 </div>
                                 
                                 <button class="automate-button">

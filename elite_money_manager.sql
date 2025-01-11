@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 30, 2024 at 09:36 PM
+-- Generation Time: Jan 11, 2025 at 01:34 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -49,6 +49,50 @@ INSERT INTO `accounts` (`id`, `name`, `account_uuid`, `current_balance`, `user_i
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `automations`
+--
+
+CREATE TABLE `automations` (
+  `id` int(11) NOT NULL,
+  `name` tinytext NOT NULL,
+  `payment_method_id` int(11) NOT NULL,
+  `mpesa_phone_number` int(11) NOT NULL,
+  `target_amount` int(11) NOT NULL,
+  `regular_deposit_amount` int(11) NOT NULL,
+  `time_of_the_day` time NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `deleted` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `daily_automations`
+--
+
+CREATE TABLE `daily_automations` (
+  `id` int(11) NOT NULL,
+  `day_id` int(11) NOT NULL,
+  `automation_id` int(11) NOT NULL,
+  `deleted` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `monthly_automations`
+--
+
+CREATE TABLE `monthly_automations` (
+  `id` int(11) NOT NULL,
+  `date` int(11) NOT NULL,
+  `automation_id` int(11) NOT NULL,
+  `deleted` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `transactions`
 --
 
@@ -71,6 +115,18 @@ ALTER TABLE `accounts`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `automations`
+--
+ALTER TABLE `automations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `daily_automations`
+--
+ALTER TABLE `daily_automations`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `transactions`
 --
 ALTER TABLE `transactions`
@@ -85,6 +141,18 @@ ALTER TABLE `transactions`
 --
 ALTER TABLE `accounts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `automations`
+--
+ALTER TABLE `automations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `daily_automations`
+--
+ALTER TABLE `daily_automations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `transactions`
