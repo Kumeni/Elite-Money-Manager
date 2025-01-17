@@ -89,7 +89,7 @@ const getUserAccounts = () => {
     request.open("GET", API_ENDPOINT, true);
     request.onreadystatechange = () => {
         if(request.readyState === 4 && request.status === 200){
-            //console.log(request.response);
+            console.log(request.response);
             accounts = JSON.parse(request.response);
             updateAccountsList(accounts);
         }
@@ -115,7 +115,7 @@ const updateAccountsList = (accounts) => {
                 innerHTML += `
                     <tr>
                         <td>${index+1}.</td>
-                        <td><a href="./account.html?id=${account.account_uuid}">${account.name}</a></td>
+                        <td><a href="./account.php?id=${account.account_uuid}">${account.name}</a></td>
                         <td>${account.account_uuid}</td>
                         <td>${account.balance}</td>
                         <td><img src="./assets/icons/Copy-icon.png" alt="copy icon" class="copy-icon" title="Copy Unique ID to clipboard"/></td>

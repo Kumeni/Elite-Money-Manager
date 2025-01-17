@@ -1,3 +1,134 @@
+<?php
+    require './api/db.php';
+    require './api/db-operations.php';
+    require './api/upload.php';
+
+    $userId = 1;
+    $account_uuid = $_GET["id"];
+
+    function getUserAccounts($host, $user, $password, $database, $userId){
+        $sql = "SELECT * FROM accounts WHERE user_id=$userId AND deleted='0'";
+        $userAccounts = find($host, $user, $password, $database, $sql);
+
+        $newArray = [];
+        foreach ($userAccounts as $index => $userAccount){
+            # code...
+            $newArray[] = $userAccount;
+        }
+
+        return $newArray;
+    }
+
+    function getAccount($userAccounts, $account_uuid){
+        //$userAccount = [];
+        for ($i=0; $i < count($userAccounts) ; $i++) {
+            # code...
+            if($userAccounts[$i]["account_uuid"] == $account_uuid){
+                $userAccount = $userAccounts[$i];
+            }
+        }
+
+        return $userAccount;
+    }
+
+    $userAccounts = getUserAccounts($host, $user, $password, $database, $userId);
+    $userAccount = getAccount($userAccounts, $account_uuid);
+    
+    function getUserAutomations($host, $user, $password, $database, $userId){
+        /**
+         * Get all the automations
+         */
+        $sql = "SELECT * FROM automations WHERE deleted='0' AND user_id='$userId'";
+        $automations = find($host, $user, $password, $database, $sql);
+
+        $newArray = [];
+
+        foreach ($automations as $index => $automation) {
+            # code...
+            unset($automation["deleted"]);
+            $automationId = $automation["id"];
+
+            $sql = "SELECT * FROM payment_methods WHERE deleted='0'";
+            $paymentMethods = find($host, $user, $password, $database, $sql);
+            foreach ($paymentMethods as $index => $paymentMethod) {
+                # code...
+                
+                if($paymentMethod["id"] == $automation["payment_method_id"]){
+                    $automation["payment_method"] = $paymentMethod["name"];
+                }
+                //$automation["payment_method"] = "mpesa";
+            }
+            unset($automation["payment_method_id"]);
+            
+            $sql = "SELECT * FROM automation_types WHERE deleted='0'";
+            $automationTypes = find($host, $user, $password, $database, $sql);
+            foreach ($automationTypes as $index => $automationType) {
+                # code...
+                if($automationType["id"] == $automation["automation_type_id"]){
+                    $automation["automation_type"] = $automationType["name"];
+                }
+            }
+            unset($automation["automation_type_id"]);
+
+            $newArray2 = [];
+            /**
+             * Get all related daily automations
+             */
+            $sql = "SELECT * FROM daily_automations WHERE deleted='0' AND automation_id='$automationId'";
+            $dailyAutomations = find($host, $user, $password, $database, $sql);
+            foreach ($dailyAutomations as $index => $dailyAutomation) {
+                # code...
+                unset($dailyAutomation["deleted"]);
+                $newArray2[] = $dailyAutomation;
+            }
+
+            $dailyAutomations = $newArray2;
+            if(count($dailyAutomations) > 0){
+                $automation["daily_automations"] = $dailyAutomations;
+            }
+
+            $newArray2 = [];
+            
+            /**
+             * Get all related monthly automations
+             */
+            $sql = "SELECT * FROM monthly_automations WHERE deleted='0' AND automation_id='$automationId'";
+            $monthlyAutomations = find($host, $user, $password, $database, $sql);
+            foreach ($monthlyAutomations as $index => $monthlyAutomation) {
+                # code...
+                unset($monthlyAutomation["deleted"]);
+                $newArray2[] = $monthlyAutomation;
+            }
+
+            $monthlyAutomations = $newArray2;
+            if(count($monthlyAutomations) > 0){
+                $automation["monthly_automations"] = $monthlyAutomations;
+            }
+
+            $newArray[] = $automation;
+        }
+        
+        $automations = $newArray;
+        
+        return $automations;
+    }
+
+    function getAccountAutomations($userAutomations, $account_uuid){
+
+        $newArray = [];
+        foreach ($userAutomations as $index => $userAutomation) {
+            # code...
+            if($userAutomation["account_uuid"] == $account_uuid){
+                $newArray[] = $userAutomation;
+            }
+        }
+
+        return $newArray;
+    }
+
+    $userAutomations = getUserAutomations($host, $user, $password, $database, $userId);
+    $accountAutomations = getAccountAutomations($userAutomations, $account_uuid);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,10 +141,13 @@
     <link rel="stylesheet" type="text/css" href="./styles/automation-form.css" />
     <link rel="stylesheet" type="text/css" href="./styles/account.css" />
     <link rel="stylesheet" type="text/css" href="./styles/popup.css" />
-
+    
     <link rel="stylesheet" href="./scripts/swiper/swiper-bundle.min.css" type="text/css"/>
-
-    <title>Account - Account Name</title>
+    <?php
+        echo "<script> let accountUuid = \"$account_uuid\";</script>";
+    ?>
+    
+    <title>Account | <?php echo $userAccount["name"] ?></title>
 </head>
 <body>
     <main>
@@ -25,7 +159,7 @@
         </section>
         <div class="border"></div>
         <section class="accounts">
-            <h1>My Account | Account Name</h1>
+            <h1>My Account | <?php echo $userAccount["name"]; ?></h1>
             <div class="underline"></div>
             <div>
                 <table class="account-balance-table">
@@ -153,7 +287,7 @@
     </section>
 
     <section class="popup" id="automations-popup">
-        <div >
+        <div>
             <div>
                 <div class="popup-close">
                     <span onclick="configureAutomations(false)" title="Close">&times;</span>
@@ -168,7 +302,7 @@
                             <div class="underline"></div>
                             <table>
                                 <thead></thead>
-                                <tbody>
+                                <tbody id="list-of-account-automations">
                                     <tr>
                                         <td>1.</td>
                                         <td>Automation number</td>
@@ -195,7 +329,7 @@
                             <button class="add-automations-button" onclick="manageAutomation()"><img src="./assets/icons/add-icon.png" /> Add automation</button>
                         </div>
                         <div class="swiper-slide">
-                            <form class="automation-form" onsubmit="manageAccountAutomation(event)">
+                            <form id="automation-form" class="automation-form" onsubmit="manageAccountAutomation(event)">
                                 <div class="automation-title-container">
                                     <span class="back-button" onclick="manageAutomation(false)">Back</span>
                                     <div class="automation-title">
@@ -206,14 +340,14 @@
                                 <div class="account-name">
                                     <span>Automation Name</span>
                                     <div>
-                                        <input onchange="handleAutomationNameChange(event)" type="text" placeholder="Rent Savings Automation"/>
+                                        <input id="automation-name" onchange="handleAutomationNameChange(event)" type="text" placeholder="Rent Savings Automation"/>
                                         <span class="error" id="automation-name-error"></span>
                                     </div>
                                 </div>
                                 <div class="account-name">
                                     <span>Transaction Type</span>
                                     <div>
-                                        <select onchange="handleTransactionTypeChange(event)">
+                                        <select id="automation-type" onchange="handleTransactionTypeChange(event)">
                                             <option value="deposit">Automated Deposit</option>
                                             <!-- <option>Automated Payment</option> -->
                                         </select>
@@ -236,7 +370,7 @@
                                                 <div class="account-name">
                                                     <span>Phone Number</span>
                                                     <div>
-                                                        <input onchange="handlePhoneNumberChange(event)" type="text" placeholder="eg. 254700000000"/>
+                                                        <input id="international-phone-number" onchange="handlePhoneNumberChange(event)" type="text" placeholder="eg. 254700000000"/>
                                                         <span class="error" id="phone-number-error"></span>
                                                     </div>
                                                 </div>
@@ -250,21 +384,21 @@
                                 <div class="account-name">
                                     <span>Target Amount</span>
                                     <div>
-                                        <input onchange="handleTargetAmount(event)" type="text" placeholder="Target Amount"/>
+                                        <input id="target-amount" onchange="handleTargetAmount(event)" type="text" placeholder="Target Amount"/>
                                         <span class="error" id="target-amount-error"></span>
                                     </div>
                                 </div>
                                 <div class="account-name">
                                     <span>Regular Deposit Amount</span>
                                     <div>
-                                        <input onchange="handleRegularDepositAmount(event)" type="text" placeholder="Regular Deposit Amount"/>
+                                        <input id="regular-deposit-amount" onchange="handleRegularDepositAmount(event)" type="text" placeholder="Regular Deposit Amount"/>
                                         <span class="error" id="regular-deposit-amount-error"></span>
                                     </div>
                                 </div>
                                 <div class="account-name">
                                     <span>Time of the day</span>
                                     <div>
-                                        <input onchange="handleTimeOfTheDay(event)" type="time" placeholder="Account Name" value="10:00"/>
+                                        <input id="time-of-the-day" onchange="handleTimeOfTheDay(event)" type="time" placeholder="Account Name" value="10:00"/>
                                         <span class="error" id="time-of-the-day-error"></span>
                                     </div>
                                 </div>
@@ -282,13 +416,13 @@
                                             <div class="swiper-slide">
                                                 <div class="day-of-the-week">
                                                     <ul>
-                                                         <li><input onclick="handleDayOfTheWeekChange(event, 0)" type="checkbox" id="sunday"/><label for="sunday">Sunday</label></li>
-                                                         <li><input onclick="handleDayOfTheWeekChange(event, 1)"type="checkbox" id="monday"/><label for="monday">Monday</label></li>
-                                                         <li><input onclick="handleDayOfTheWeekChange(event, 2)"type="checkbox" id="tuesday"/><label for="tuesday">Tuesday</label></li>
-                                                         <li><input onclick="handleDayOfTheWeekChange(event, 3)"type="checkbox" id="wednesday"/><label for="wednesday">Wednesday</label></li>
-                                                         <li><input onclick="handleDayOfTheWeekChange(event, 4)"type="checkbox" id="thursday"/><label for="thursday">Thursday</label></li>
-                                                         <li><input onclick="handleDayOfTheWeekChange(event, 5)"type="checkbox" id="friday"/><label for="friday">Friday</label></li>
-                                                         <li><input onclick="handleDayOfTheWeekChange(event, 6)"type="checkbox" id="saturday"/><label for="saturday">Saturday</label></li>
+                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 0)" type="checkbox" id="sunday"/><label for="sunday">Sunday</label></li>
+                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 1)"type="checkbox" id="monday"/><label for="monday">Monday</label></li>
+                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 2)"type="checkbox" id="tuesday"/><label for="tuesday">Tuesday</label></li>
+                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 3)"type="checkbox" id="wednesday"/><label for="wednesday">Wednesday</label></li>
+                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 4)"type="checkbox" id="thursday"/><label for="thursday">Thursday</label></li>
+                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 5)"type="checkbox" id="friday"/><label for="friday">Friday</label></li>
+                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 6)"type="checkbox" id="saturday"/><label for="saturday">Saturday</label></li>
                                                     </ul>
                                                  </div>
                                             </div>
@@ -342,7 +476,7 @@
                                     <span class="error" id="frequency-error"></span>
                                 </div>
                                 
-                                <button class="automate-button">
+                                <button class="automate-button" onclick="manageAccountAutomation(event)">
                                     <img src="./assets/icons/white-automation-icon.png" alt="White automation icon" />
                                     <span>Automate</span>
                                 </button>
