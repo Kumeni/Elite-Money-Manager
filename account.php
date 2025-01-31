@@ -416,13 +416,13 @@
                                             <div class="swiper-slide">
                                                 <div class="day-of-the-week">
                                                     <ul>
-                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 0)" type="checkbox" id="sunday"/><label for="sunday">Sunday</label></li>
-                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 1)"type="checkbox" id="monday"/><label for="monday">Monday</label></li>
-                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 2)"type="checkbox" id="tuesday"/><label for="tuesday">Tuesday</label></li>
-                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 3)"type="checkbox" id="wednesday"/><label for="wednesday">Wednesday</label></li>
-                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 4)"type="checkbox" id="thursday"/><label for="thursday">Thursday</label></li>
-                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 5)"type="checkbox" id="friday"/><label for="friday">Friday</label></li>
-                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 6)"type="checkbox" id="saturday"/><label for="saturday">Saturday</label></li>
+                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 1)" type="checkbox" id="sunday"/><label for="sunday">Sunday</label></li>
+                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 2)"type="checkbox" id="monday"/><label for="monday">Monday</label></li>
+                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 3)"type="checkbox" id="tuesday"/><label for="tuesday">Tuesday</label></li>
+                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 4)"type="checkbox" id="wednesday"/><label for="wednesday">Wednesday</label></li>
+                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 5)"type="checkbox" id="thursday"/><label for="thursday">Thursday</label></li>
+                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 6)"type="checkbox" id="friday"/><label for="friday">Friday</label></li>
+                                                        <li><input class="dayOfTheWeek" onclick="handleDayOfTheWeekChange(event, 7)"type="checkbox" id="saturday"/><label for="saturday">Saturday</label></li>
                                                     </ul>
                                                  </div>
                                             </div>
