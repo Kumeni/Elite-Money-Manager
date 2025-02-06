@@ -73,39 +73,48 @@
      * Store them in activeDailyAutomations and activeMonthlyAutomations;
      */
 	$newArray = [];
-
 	foreach ($dailyAutomations as $index => $dailyAutomation) {
 		# code...
 		if(isPastAutomationActivationTime($dailyAutomation["time_of_the_day"]) == true){
+			if(automationCompleted(1) == false){
+				//Activate the automation;
+				//initiateWeeklyAutomation($monthlyAutomation["automation_id"], $monthlyAutomation["id"]);
+				var_dump($dailyAutomation);
+				initiateWeeklyAutomation($host, $user, $password, $database, $dailyAutomation["id"], $dailyAutomation["daily_automation_id"]);
+			}
 		} else {
 			//Skip the automation
 		}
 
 		if(isPastAutomationActivationDay($dailyAutomation["day"]) == true){
-			//Activate automation
+			if(automationCompleted(1) == false){
+				//Activate the automation;
+				//initiateWeeklyAutomation($monthlyAutomation["automation_id"], $monthlyAutomation["id"]);
+				initiateWeeklyAutomation($host, $user, $password, $database, $dailyAutomation["id"], $dailyAutomation["daily_automation_id"]);
+			}
+			
 		} else {
 			//Skip the automation
 		}
 	}
 	$dailyAutomations = $newArray;
 
-	foreach ($monthlyAutomations as $index => $monthlyAutomation) {
+	/*foreach ($monthlyAutomations as $index => $monthlyAutomation) {
 		# code...
 		if(isPastAutomationActivationTime($monthlyAutomation["time_of_the_day"]) == true){
-			if(automationCompleted($monthlyAutomation["id"]) == false){
-				
+			if(automationCompleted(1) == false){
 				//Activate the automation;
-				//initiateWeeklyAutomation($monthlyAutomation["automation_id"], $monthlyAutomation["id"]);
+				initiateMonthlyAutomation($host, $user, $password, $database, $monthlyAutomation["id"], $monthlyAutomation["monthly_automation_id"]);
 			}
 		}
 
 		if(isPastAutomationActivationDate($monthlyAutomation["date"]) == true){
-			if(automationCompleted($monthlyAutomation["id"]) == false){
+			if(automationCompleted(1) == false){
 				//Activate the automation;
-				//initiateMonthlyAutomation($monthlyAutomation["automation_id"], $monthlyAutomation["id"]);
+				initiateMonthlyAutomation($host, $user, $password, $database, $monthlyAutomation["id"], $monthlyAutomation["monthly_automation_id"]);
 			}
 		}
-	}
+	}*/
 
 	function automationCompleted($automationId){
 		//get the latest automation that matches it's id
@@ -118,37 +127,30 @@
 		return false;
 	}
 	
-	function initiateMonthlyAutomation($automationId, $monthlyAutomationId){
+	function initiateMonthlyAutomation($host, $user, $password, $database, $automationId, $monthlyAutomationId){
 		$newArray = [];
 		$sql = "SELECT * FROM automations WHERE id=$automationId";
 		$automations = find($host, $user, $password, $database, $sql);
 		foreach ($automations as $index => $automation) {
 			# code...
-			unset($dailyAutomation["deleted"]);
+			//unset($dailyAutomation["deleted"]);
 			$newArray[] = $automation;
 		}
 		$automations = $newArray;
 		$automation = $automations[0];
 
 		//Get the payment method
-		if($automation["payment_method"] == 1){
+		if($automation["payment_method_id"] == 1){
 			//Initiate stk push and store in the database;
 			$phoneNumber = $automation["mpesa_phone_number"];
 			$amount = $automation["regular_deposit_amount"];
 			$transactionDesc = $automation["name"];
 
 			$stkPushResponse = initiateSTKPush($phoneNumber, $amount, $transactionDesc);
+			var_dump($stkPushResponse);
+			$mpesaTransactionId = handleSTKPushResponse($host, $user, $password, $database, $stkPushResponse);
 			
-			//Create an entry under mpesa_transactions
-			$merchantRequestId = $stkPushResponse["MerchantRequestID"];
-			$checkoutRequestId = $stkPushResponse["CheckoutResponseId"];
-			$responseCode = $stkPushResponse["ResponseCode"];
-			$responseDescription = $stkPushResponse["ResponseDescription"];
-
-			$sql = "INSERT INTO mpesa_transactions(`stk_push_merchant_request_id`, `stk_push_checkout_request_id`, `stk_push_response_code`, `stk_push_response_description`) VALUES('$merchantRequestId', '$checkoutRequestId', '$responseCode', '$responseDescription')";
-        	$mpesaTransactionId = create($host, $user, $password, $database, $sql);
-			
-			//Create an entry under initiatedautomations
+			//Create an entry under initiated automations
 			$sql = "INSERT INTO initiated_automations(`automation_id`, `monthly_automation_id`, `mpesa_transaction_id`) VALUES('$automationId', '$monthlyAutomationId', '$mpesaTransactionId')";
         	$initiatedAutomationId = create($host, $user, $password, $database, $sql);
 		} else {
@@ -156,14 +158,35 @@
 		}
 	}
 
-	function initiateWeeklyAutomation($automationId, $weeklyAutomationId){
-		//Fetch the automation
+	function initiateWeeklyAutomation($host, $user, $password, $database, $automationId, $weeklyAutomationId){
+		$newArray = [];
+		$sql = "SELECT * FROM automations WHERE id=$automationId";
+		$automations = find($host, $user, $password, $database, $sql);
+		foreach ($automations as $index => $automation) {
+			# code...
+			//unset($dailyAutomation["deleted"]);
+			$newArray[] = $automation;
+		}
+		$automations = $newArray;
+		$automation = $automations[0];
 
 		//Get the payment method
+		if($automation["payment_method_id"] == 1){
+			//Initiate stk push and store in the database;
+			$phoneNumber = $automation["mpesa_phone_number"];
+			$amount = $automation["regular_deposit_amount"];
+			$transactionDesc = $automation["name"];
 
-		//If mpesa, initiate the stk push
-
-		//Create a record to show the transaction was initiated
+			$stkPushResponse = initiateSTKPush($phoneNumber, $amount, $transactionDesc);
+			var_dump($stkPushResponse);
+			$mpesaTransactionId = handleSTKPushResponse($host, $user, $password, $database, $stkPushResponse);
+			
+			//Create an entry under initiated automations
+			$sql = "INSERT INTO initiated_automations(`automation_id`, `daily_automation_id`, `mpesa_transaction_id`) VALUES('$automationId', '$weeklyAutomationId', '$mpesaTransactionId')";
+        	$initiatedAutomationId = create($host, $user, $password, $database, $sql);
+		} else {
+			//do nothing till we expand the business;
+		}
 	}
 
 	function isPastAutomationActivationTime($activationTime){

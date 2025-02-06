@@ -118,14 +118,54 @@
 
         //ECHO  RESPONSE
         $data = json_decode($curl_response);
-        $CheckoutRequestID = $data->CheckoutRequestID;
-        $ResponseCode = $data->ResponseCode;
+        //$CheckoutRequestID = $data->CheckoutRequestID;
+        //$ResponseCode = $data->ResponseCode;
         return $data;
         if ($ResponseCode == "0") {
             //echo "The CheckoutRequestID for this transaction is : " . $CheckoutRequestID;
         }
     }
 
+
+    function handleSTKPushResponse($host, $user, $password, $database, $stkPushResponse){
+        if(isset($stkPushResponse->errorCode)){
+            /**
+             * Handle error code
+             */
+            $merchantRequestId = $stkPushResponse->requestId;
+            $errorCode = $stkPushResponse->errorCode;
+            $errorMessage = $stkPushResponse->errorMessage;
+
+            if($stkPushResponse->errorCode == "500.001.1001"){
+                $data = [
+                    "requestId"=>"c62b-4e23-a479-5f74de8082a1893078",
+                    "errorCode"=>"500.001.1001",
+                    "errorMessage"=>"Unable to lock subscriber, a transaction is already in process for the current subscriber"
+                ];
+
+            } else if ( $stkPushResponse->errorCode == "500.003.02" ){
+                $data = [
+                    "requestId"=>"c62b-4e23-a479-5f74de8082a1893336",
+                    "errorCode"=>"500.003.02",
+                    "errorMessage"=>"System is busy. Please try again in few minutes."
+                ];
+            }
+            
+            $sql = "INSERT INTO mpesa_transactions(`stk_push_merchant_request_id`, `stk_push_error_code`, `stk_push_error_message`) VALUES('$merchantRequestId', '$errorCode', '$errorMessage')";
+            $mpesaTransactionId = create($host, $user, $password, $database, $sql);
+        } else {
+            $merchantRequestId = $stkPushResponse->MerchantRequestID;
+            $checkoutRequestId = $stkPushResponse->CheckoutRequestID;
+            $responseCode = $stkPushResponse->ResponseCode;
+            $responseDescription = $stkPushResponse->ResponseDescription;
+            $customerMessage = $stkPushResponse->CustomerMessage;
+
+            $sql = "INSERT INTO mpesa_transactions(`stk_push_merchant_request_id`, `stk_push_checkout_request_id`, `stk_push_response_code`, `stk_push_response_description`, stk_push_customer_message) VALUES('$merchantRequestId', '$checkoutRequestId', '$responseCode', '$responseDescription', '$customerMessage')";
+            $mpesaTransactionId = create($host, $user, $password, $database, $sql);
+        }
+
+        return $mpesaTransactionId;
+    }
     //initiateSTKPush("254717551542", 1, "Regular deposit");
     //echo $access_token;
 
